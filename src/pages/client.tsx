@@ -1,6 +1,7 @@
+import Client from '@/screens/Client/Client'
 import Head from 'next/head'
 
-export default function Home() {
+export default function ClientPage() {
   return (
     <>
       <Head>
@@ -10,9 +11,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div>
-
-      </div>
+        <Client />
     </>
   )
 }

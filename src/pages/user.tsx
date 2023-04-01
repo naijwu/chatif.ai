@@ -1,6 +1,7 @@
+import User from '@/screens/User/User'
 import Head from 'next/head'
 
-export default function Home() {
+export default function UserPage() {
   return (
     <>
       <Head>
@@ -10,9 +11,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div>
-
-      </div>
+        <User />
     </>
   )
 }
