@@ -1,0 +1,30 @@
+.demoWebsite {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.interfaceWrapper {
+    position: fixed;
+    bottom: 0;
+    right: 1rem;
+}
+
+.interface {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat {
+    background-color: pink;
+    margin-bottom: 0.5rem;
+}
+
+.guy {
+    display: flex;
+    height: 40px;
+    width: 300px;
+    background-color: black;
+}
