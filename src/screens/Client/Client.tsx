@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import styles from './Client.module.css'
 import axios from 'axios'
+import { openai } from '@/utility/openai'
 
 const APIFY_API_KEY = process.env.NEXT_PUBLIC_APIFY_API_KEY
 
@@ -64,7 +65,7 @@ const Client = () => {
                         .then(response => response.json())
                         .then(data => {
                             console.log(data.length)
-                            setResult(data)
+                            cleanAndAddContext(data)
                             setLoading(false)
                         })
                         .catch(error => console.error(error));
@@ -79,14 +80,52 @@ const Client = () => {
     }
 
     const handleScrape = async () => {
-
         console.log('scraping', websiteLink)
 
         await scrapeApify()
     }
 
+    async function getSummaryOfText(textToSummarize: string) {
+          const response = await openai.createCompletion({
+            model: 'text-davinci-002',
+            prompt: `Summarize the following content: ${textToSummarize}`,
+            max_tokens: 257,
+            temperature: 0.1,
+        });
+
+        const summary = response.data.choices[0].text;
+        return summary;
+    }
+
+    async function cleanAndAddContext(scrapedArray: any) {
+        // temporary 
+        const cleanedArray = []
+
+        if (!scrapedArray) return console.error ('no data to sort')
+
+        for (let i = 0; i < scrapedArray.length; i++) {
+            const { url, pageTitle, random_text_from_the_page } = scrapedArray[i]
+
+            const pathArray = url.replace(/^(https?:\/\/)?(www\.)?/, '').split('/')
+            pathArray.shift()
+            const path = pathArray.join('/')
+            const summary = await getSummaryOfText(random_text_from_the_page);
+
+            cleanedArray.push({
+                title: pageTitle,
+                path: `/${path}`,
+                summary,
+                content: random_text_from_the_page
+            })
+        }
+        setResult(cleanedArray)
+    }
+
     return (
         <div className={styles.container}>
+            <div onClick={cleanAndAddContext}>
+                clean data
+            </div>
             <div className={styles.section}>
                 <h3>Website you want to botify:</h3>
                 <input type="text" value={websiteLink} onChange={e=>setWebsiteLink(e.target.value)} />

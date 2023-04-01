@@ -1,16 +1,14 @@
 import { useState } from 'react'
 import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
 import styles from './User.module.css'
+import { openai } from '@/utility/openai';
 
-const DEMO_WEBSITE_URL = "https://www.jaewuchun.com"
-
-const User = () => {
+const User = ({
+    demoUrl
+}: {
+    demoUrl?: string
+}) => {
     const [showChat, setShowChat] = useState<boolean>(false)
-
-    const configuration = new Configuration({
-        apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-    });
-    const openai = new OpenAIApi(configuration);
 
     const [question, setQuestion] = useState<string>('')
     const [loading, setLoading] = useState<boolean>(false)
@@ -30,7 +28,6 @@ const User = () => {
             model: "gpt-3.5-turbo",
             messages: updatedChatHistory as ChatCompletionRequestMessage[]
         })
-        console.log(response)
 
         const respondedChatHistory = JSON.parse(JSON.stringify(updatedChatHistory || []))
         respondedChatHistory.push(response.data.choices[0].message)
@@ -54,7 +51,7 @@ const User = () => {
 
     return (
         <>
-            <iframe width="100%" height="100%" className={styles.demoWebsite} src={DEMO_WEBSITE_URL} />
+            <iframe width="100%" height="100%" className={styles.demoWebsite} src={`https://${demoUrl}`} />
 
             <div className={styles.interfaceWrapper}>
 
