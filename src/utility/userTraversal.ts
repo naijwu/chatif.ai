@@ -5,7 +5,6 @@ import { FlatSummaryNode } from './types'
 async function chooseBetweenNodes(question: string, nodesToCompare: FlatSummaryNode[]) {
 
     let prompt = `There are ${nodesToCompare.length} pages, respectively referred as ${nodesToCompare?.map((n, index) => (`${index}${!(nodesToCompare.length - 1 == index) ? ', ' : ''}`))}. `
-
     for (let i = 0; i < nodesToCompare.length; i++) {
         prompt += `Page ${i} has the title ${nodesToCompare[i].title}. The summary for Page ${i} is as follows: ${nodesToCompare[i].summary}. `
     }
