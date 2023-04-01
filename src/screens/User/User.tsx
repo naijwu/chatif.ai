@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
 import styles from './User.module.css'
+import { openai } from '@/utility/openai';
 
 const User = ({
     demoUrl
@@ -8,11 +9,6 @@ const User = ({
     demoUrl?: string
 }) => {
     const [showChat, setShowChat] = useState<boolean>(false)
-
-    const configuration = new Configuration({
-        apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-    });
-    const openai = new OpenAIApi(configuration);
 
     const [question, setQuestion] = useState<string>('')
     const [loading, setLoading] = useState<boolean>(false)
