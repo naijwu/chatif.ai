@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
+import { ChatCompletionRequestMessage } from "openai";
 import styles from './User.module.css'
 import { openai } from '@/utility/openai';
 
@@ -54,7 +54,6 @@ const User = ({
             <iframe width="100%" height="100%" className={styles.demoWebsite} src={`https://${demoUrl}`} />
 
             <div className={styles.interfaceWrapper}>
-
                 <div className={styles.interface}>
                     <div className={`${styles.chat} ${showChat ? styles.opened : ''}`}>
                         <div className={styles.chatHistory}>
