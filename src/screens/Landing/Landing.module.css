@@ -1,15 +1,25 @@
 
 .container {
     width: 100%;
+    padding-bottom: 5rem;
 }
 
 .navigation {
     width: 1000px;
     margin: 0 auto;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
     justify-content: space-between;
     align-items: center;
     padding: 2rem 0;
+}
+.navCenter {
+    display: flex;
+    justify-content: center;
+}
+.navRight {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .brand {
@@ -27,30 +37,31 @@
     cursor: pointer;
 }
 
-.button {
-    font-family: 'Space Grotesk', monospace;
-    padding: 0.8rem 1rem;
-    background-color: var(--colour-purple);
-    color: white;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.13s ease;
-}
-.button:hover {
-    filter: brightness(0.95);
-}
-.button:active {
-    transform: scale(0.98);
-}
-
 .hero {
     width: 800px;
     margin: 0 auto;
     display: flex;
-    justify-content: center;
+    align-items: center;
     padding: 5rem 0;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .hero h1 {
     font-family: 'Space Grotesk', monospace;
+    text-align: center;
+    font-size: 3rem;
+}
+
+.hero p {
+    text-align: center;
+    line-height: 160%;
+}
+
+.immerse {
+    width: 1000px;
+    margin: 0 auto;
+    min-height: 400px;
+    background-color: #EEE;
+    border-radius: 18px;
 }

@@ -1,0 +1,17 @@
+
+
+.button {
+    font-family: 'Space Grotesk', monospace;
+    padding: 0.8rem 1rem;
+    background-color: var(--color-blue);
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.13s ease;
+}
+.button:hover {
+    filter: brightness(0.95);
+}
+.button:active {
+    transform: scale(0.98);
+}
