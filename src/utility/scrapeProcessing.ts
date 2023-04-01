@@ -1,26 +1,31 @@
-import { Summary, TreeNode } from "./types";
+import { FlatSummaryNode, TreeNode } from "./types";
 
-export function summaryToTree(summaryList: Summary[]): TreeNode {
-  const rootNode = summaryList.find((e) => e.path === "/") as Summary;
+export function flatSummaryToTree(summaryList: FlatSummaryNode[]): TreeNode {
+  const rootNode = summaryList.find((e) => e.path === "/") as FlatSummaryNode;
   return makeSubTree(summaryList, rootNode);
 }
 
-function makeSubTree(summaryList: Summary[], node: Summary): TreeNode {
-  const currLevelSummaries: Summary[] = summaryList.filter((candidate) => {
-    const base = node.path;
-    const baseCleaned = base.endsWith("/")
-      ? base.slice(0, base.length - 1)
-      : base;
-    const candPath = candidate.path;
+function makeSubTree(
+  summaryList: FlatSummaryNode[],
+  node: FlatSummaryNode
+): TreeNode {
+  const currLevelSummaries: FlatSummaryNode[] = summaryList.filter(
+    (candidate) => {
+      const base = node.path;
+      const baseCleaned = base.endsWith("/")
+        ? base.slice(0, base.length - 1)
+        : base;
+      const candPath = candidate.path;
 
-    const excess = candPath.slice(baseCleaned.length);
+      const excess = candPath.slice(baseCleaned.length);
 
-    const notSubstringCheck = excess.startsWith("/");
-    const oneDepthCheck =
-      excess.split("/").filter((e) => e.length !== 0).length === 1;
+      const notSubstringCheck = excess.startsWith("/");
+      const oneDepthCheck =
+        excess.split("/").filter((e) => e.length !== 0).length === 1;
 
-    return notSubstringCheck && oneDepthCheck;
-  });
+      return notSubstringCheck && oneDepthCheck;
+    }
+  );
 
   return {
     ...node,
