@@ -1,7 +1,8 @@
 import User from '@/screens/User/User'
+import { GetServerSidePropsContext } from 'next'
 import Head from 'next/head'
 
-export default function UserPage() {
+export default function UserPage({ demoUrl }: any) {
   return (
     <>
       <Head>
@@ -11,7 +12,17 @@ export default function UserPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-        <User />
+        <User demoUrl={demoUrl} />
     </>
   )
+}
+
+export async function getServerSideProps(context: any) {
+  const { url } = context.params
+
+  return {
+    props: {
+      demoUrl: url
+    }, 
+  }
 }

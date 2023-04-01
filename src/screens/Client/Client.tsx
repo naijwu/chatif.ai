@@ -79,7 +79,6 @@ const Client = () => {
     }
 
     const handleScrape = async () => {
-
         console.log('scraping', websiteLink)
 
         await scrapeApify()
