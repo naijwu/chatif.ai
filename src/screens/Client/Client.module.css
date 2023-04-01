@@ -1,0 +1,28 @@
+.container {
+    height: 100vh;
+    background-color: #f8f8f8;
+    display: flex;
+}
+
+.sidebar {
+    width: 70px;
+    height: 100%;
+    background: white;
+}
+
+.wrapper {
+    flex-grow: 1;
+}
+
+.section {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+.floatingButton {
+    background: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.02);
+    display: table;
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+}

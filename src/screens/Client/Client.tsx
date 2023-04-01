@@ -140,15 +140,31 @@ const Client = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.section}>
-        <h3>Website you want to botify:</h3>
-        <input
-          type="text"
-          value={websiteLink}
-          onChange={(e) => setWebsiteLink(e.target.value)}
-        />
-        <button onClick={handleScrape}>Add!</button>
-      </div>
+        <div className={styles.sidebar}>
+            <div className={styles.brand}>
+
+            </div>
+            <div className={styles.icons}>
+
+            </div>
+            <div className={styles.userIcon}>
+
+            </div>
+        </div>
+        <div className={styles.wrapper}>
+            <div className={styles.section}>
+                <div className={styles.floatingButton}>
+                    {`<- Go back`}
+                </div>
+                <h3>Website you want to botify:</h3>
+                <input
+                    type="text"
+                    value={websiteLink}
+                    onChange={(e) => setWebsiteLink(e.target.value)}
+                    />
+                <button onClick={handleScrape}>Add!</button>
+            </div>
+        </div>
 
       {loading && "loading..."}
       {result && (
