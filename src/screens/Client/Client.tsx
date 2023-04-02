@@ -29,12 +29,14 @@ const PlusIcon = () => (
 );
 
 const Client = () => {
-  const APIFY_DATA_TIMEOUT = 60000;
+  const APIFY_DATA_TIMEOUT = 120;
   const userUID = "Y458AEs1X0MUcqcTduJwBq1WDOh2";
   const appName = "telus-bot";
 
   const [websiteLink, setWebsiteLink] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const [result, setResult] = useState<any>();
 
@@ -107,7 +109,7 @@ const Client = () => {
 
         setTimeout(() => {
           fetchDataset(datasetId);
-        }, APIFY_DATA_TIMEOUT);
+        }, APIFY_DATA_TIMEOUT * 1000);
       })
       .catch(function (error) {
         console.error(error);
@@ -184,29 +186,86 @@ const Client = () => {
       </div>
       <div className={styles.wrapper}>
         <div className={styles.section}>
-          <h2>Dashboard</h2>
-          <div className={styles.buttons}>
-            <Button href="#">
-              <div className={styles.buttonInner}>
-                <PlusIcon />
-                New chatbot
+          {loading && "loading..."}
+          {isCreating ? (
+            <>
+              <div className={styles.buttons}>
+                <Button href="#">
+                  <div
+                    className={styles.buttonInner}
+                    onClick={() => {
+                      setIsCreating(false);
+                    }}
+                  >
+                    Back
+                  </div>
+                </Button>
               </div>
-            </Button>
-          </div>
-          <h3>Website you want to botify:</h3>
-          <input
-            type="text"
-            value={websiteLink}
-            onChange={(e) => setWebsiteLink(e.target.value)}
-          />
-          <button onClick={handleScrape}>Add!</button>
+
+              <div className={styles.newBot}>
+                <h2>
+                  {loading
+                    ? `Generating your chatbot`
+                    : `Let's generate your chatbot!`}
+                </h2>
+                {loading ? (
+                  <>
+                    <div className={styles.progress}>
+                      <div
+                        style={{
+                          transition: `all ${APIFY_DATA_TIMEOUT}s linear`,
+                        }}
+                        className={`${styles.progressBar} ${
+                          loading ? styles.loading : ""
+                        }`}
+                      ></div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className={styles.field}>
+                      <strong>Name</strong>
+                      <input type="text" />
+                    </div>
+                    <div className={styles.field}>
+                      <strong>URL</strong>
+                      <input
+                        type="text"
+                        value={websiteLink}
+                        onChange={(e) => setWebsiteLink(e.target.value)}
+                      />
+                    </div>
+                    <div className={styles.buttonPane}>
+                      <div className={styles.button} onClick={handleScrape}>
+                        Generate
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <h2>Dashboard</h2>
+              <div className={styles.buttons}>
+                <Button href="#">
+                  <div
+                    className={styles.buttonInner}
+                    onClick={() => {
+                      setIsCreating(true);
+                    }}
+                  >
+                    <PlusIcon />
+                    New chatbot
+                  </div>
+                </Button>
+              </div>
+
+              <div className={styles.dashboard}></div>
+            </>
+          )}
         </div>
       </div>
-
-      {loading && "loading..."}
-      {result && (
-        <div className={styles.section}>{JSON.stringify(result || {})}</div>
-      )}
     </div>
   );
 };
