@@ -27,17 +27,15 @@ const CreationPage = ({
     <div className={styles.container}>
       <div className={styles.buttons}>
         {!loading && (
-          <Button href="#" disabled={loading}>
+          <Button href="#" disabled={loading} lightmode>
             <div
               className={`${styles.buttonInner}`}
               onClick={() => {
-                if (loading) return
+                if (loading) return;
                 setPage("dashboard");
               }}
             >
-              <span>
-                {`<-`}
-              </span>
+              <span>{`<-`}</span>
               Dashboard
             </div>
           </Button>
@@ -48,13 +46,20 @@ const CreationPage = ({
         <h2>
           {loading ? `Generating your chatbot` : `Let's generate your chatbot!`}
         </h2>
-        {loading && <p>Please wait until the process completes before leaving this page</p>}
+        {loading && (
+          <p>
+            Please wait until the process completes before leaving this page
+          </p>
+        )}
         {loading ? (
           <>
             <div className={styles.progress}>
-              <div style={{
-                animationDuration: `${APIFY_DATA_TIMEOUT}s`
-              }} className={styles.progressBar}></div>
+              <div
+                style={{
+                  animationDuration: `${APIFY_DATA_TIMEOUT}s`,
+                }}
+                className={styles.progressBar}
+              ></div>
             </div>
           </>
         ) : (

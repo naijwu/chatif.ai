@@ -24,7 +24,7 @@ export async function chooseBetweenNodes(
       {
         role: "system",
         content:
-          "You are a helpful assistant. Your responses are always an array in JSON format, nothing else.",
+          "You are a helpful assistant. Your responses are always in the format of a JSON array of numbers.",
       },
       {
         role: "user",
@@ -34,6 +34,7 @@ export async function chooseBetweenNodes(
   });
   const result = response.data.choices[0].message?.content || "";
   const rankings = findArray(result) || [];
+  console.log(result);
 
   return rankings.map((i: number) => nodesToCompare[i]).slice(0, returnCount);
 }

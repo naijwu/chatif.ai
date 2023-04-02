@@ -7,20 +7,30 @@ type Props = {
   className?: string;
   minWidth?: number;
   onClick?: any;
+  lightmore?: boolean;
   [x: string | number]: any;
 };
 
-const Button = ({ children, href, minWidth, className, disabled, onClick, ...other }: Props) => {
+const Button = ({
+  children,
+  href,
+  minWidth,
+  className,
+  disabled,
+  onClick,
+  lightmode,
+  ...other
+}: Props) => {
   const router = useRouter();
 
   return (
     <div
       {...other}
-      className={`${styles.button} ${className || ""} ${disabled ? styles.disabled : ''}`}
-    
-        // no seriously, what the heck is this 
-      onClick={onClick ? onClick : () => router.push(href || '')}
-
+      className={`${styles.button} ${className || ""} ${
+        disabled ? styles.disabled : ""
+      } ${lightmode ? styles.lightmode : ""}`}
+      // no seriously, what the heck is this
+      onClick={onClick ? onClick : () => router.push(href || "")}
       style={
         minWidth
           ? {

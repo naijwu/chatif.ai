@@ -1,24 +1,29 @@
-
-
 .button {
-    font-family: 'Space Grotesk', monospace;
-    padding: 0.8rem 1rem;
-    background-color: var(--color-blue);
-    color: white;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.13s ease;
-    box-shadow: 0 0 2px var(--color-blue);
-    user-select: none;
+  font-family: "Space Grotesk", monospace;
+  padding: 0.8rem 1rem;
+  background-color: var(--color-blue);
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.13s ease;
+  box-shadow: 0 0 2px var(--color-blue);
+  user-select: none;
 }
 .button:not(.disabled):hover {
-    filter: brightness(0.95);
+  filter: brightness(0.95);
 }
 .button:not(.disabled):active {
-    transform: scale(0.98);
+  transform: scale(0.98);
 }
 .disabled {
-    background: #ccc;
-    color: #777;
-    cursor: default;
+  background: #ccc;
+  color: #777;
+  cursor: default;
+}
+
+.lightmode {
+  color: black;
+  background-color: white;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
+  padding: 0.6rem 1rem;
 }
