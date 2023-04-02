@@ -1,3 +1,9 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .buttons {
   display: flex;
   justify-content: flex-start;
@@ -42,6 +48,11 @@
   border-color: var(--color-purple);
 }
 
+@keyframes expandProgress {
+  from {width: 0%;}
+  to {width: 100%;}
+}
+
 .progress {
   height: 30px;
   width: 100%;
@@ -51,9 +62,12 @@
   overflow: hidden;
 }
 .progressBar {
+  animation-name: expandProgress;
+  animation-duration: 10s;
+  animation-iteration-count: 1;
+  animation-direction: forward;
   background-color: var(--color-purple);
   height: 100%;
-  width: 0%;
 }
 .progressBar.loading {
   width: 100%;
