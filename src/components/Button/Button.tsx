@@ -1,25 +1,34 @@
-import { useRouter } from 'next/router'
-import styles from './Button.module.css'
+import { useRouter } from "next/router";
+import styles from "./Button.module.css";
 
-const Button = ({ 
-    children, 
-    href, 
-    minWidth 
-}: { 
-    children: any, 
-    href: string, 
-    minWidth?: number 
-}) => {
-    const router = useRouter()
+type Props = {
+  children: any;
+  href: string;
+  className?: string;
+  minWidth?: number;
+  [x: string | number]: any;
+};
 
-    return (
-        <div className={styles.button} onClick={()=>router.push(href)} style={minWidth ? {
-            minWidth: `${minWidth}px`,
-            textAlign: 'center'
-        } : {}}>
-            {children}
-        </div>
-    )
-}
+const Button = ({ children, href, minWidth, className, ...other }: Props) => {
+  const router = useRouter();
 
-export default Button
+  return (
+    <div
+      {...other}
+      className={`${styles.button} ${className || ""}`}
+      onClick={() => router.push(href)}
+      style={
+        minWidth
+          ? {
+              minWidth: `${minWidth}px`,
+              textAlign: "center",
+            }
+          : {}
+      }
+    >
+      {children}
+    </div>
+  );
+};
+
+export default Button;
