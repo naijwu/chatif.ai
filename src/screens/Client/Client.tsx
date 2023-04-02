@@ -27,6 +27,8 @@ const Client = () => {
   const [appName, setAppName] = useState("");
   const [url, setURL] = useState("");
 
+  const [creationLog, setCreationLog] = useState<string[]>([])
+
   const pageDict = {
     dashboard: (
       <Dashboard 
@@ -51,6 +53,12 @@ const Client = () => {
         setPage={setPage} />
     ),
   };
+
+  function addToLog(log: string) {
+    const updatedLog = JSON.parse(JSON.stringify(creationLog))
+    updatedLog.push(log)
+    setCreationLog(updatedLog)
+  }
 
   function fetchDataset(datasetId: any) {
     if (datasetId) {
@@ -118,6 +126,7 @@ const Client = () => {
       .then(function (response) {
         datasetId = response.data.data.defaultDatasetId;
         console.log(response.data, datasetId);
+        addToLog(`Scraping data from ${websiteLink}`)
 
         setTimeout(() => {
           fetchDataset(datasetId);
@@ -160,6 +169,7 @@ const Client = () => {
       pathArray.shift();
       const path = pathArray.join("/");
       const summary = await getSummaryOfText(random_text_from_the_page);
+      addToLog(`Added path ${path} node with summary`)
 
       cleanedArray.push({
         title: pageTitle,
@@ -169,6 +179,7 @@ const Client = () => {
       });
     }
 
+    addToLog(`Uploading tree to database with id ${userUID} of ${appName}`)
     set(ref(db, `users/${userUID}/${appName}`), {
       name: appName,
       pages: cleanedArray,
@@ -189,6 +200,15 @@ const Client = () => {
       <Sidebar />
       <div className={styles.wrapper}>
         <div className={styles.section}>{(pageDict as any)[page]}</div>
+        {loading && creationLog.length > 0 ? 
+                <div className={styles.logs}>{
+                    creationLog?.map((log, index) => (
+                    <div key={index}>
+                        {log}
+                    </div>
+                    ))}
+                </div>
+        : <></>}
       </div>
     </div>
   );

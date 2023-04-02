@@ -27,14 +27,14 @@ const CreationPage = ({
     <div className={styles.container}>
       <div className={styles.buttons}>
         {!loading && (
-          <Button href="#" disabled={loading} lightmode>
-            <div
-              className={`${styles.buttonInner}`}
-              onClick={() => {
-                if (loading) return;
-                setPage("dashboard");
-              }}
-            >
+          <Button
+            onClick={() => {
+              if (loading) return;
+              setPage("dashboard");
+            }}
+            disabled={loading}
+          >
+            <div className={`${styles.buttonInner}`}>
               <span>{`<-`}</span>
               Dashboard
             </div>
