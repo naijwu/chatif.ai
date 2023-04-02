@@ -87,6 +87,9 @@ const User = ({ demoUrl }: { demoUrl?: string }) => {
       <div className={styles.interfaceWrapper}>
         <div className={styles.interface}>
           <div className={`${styles.chat} ${showChat ? styles.opened : ""}`}>
+            <div className={styles.guy}>
+                Chat
+            </div>
             <div className={styles.chatHistory}>
               {chatHistoryToDisplay?.map(
                 (item, index) =>
@@ -103,17 +106,14 @@ const User = ({ demoUrl }: { demoUrl?: string }) => {
               <button
                 onClick={async () => {
                   addQuestionToView();
-
                   setLoading(true);
                   await askGPT();
                   setLoading(false);
-                }}
-              >
+                }}>
                 Send
               </button>
             </div>
           </div>
-          <div className={styles.guy}>Chat</div>
         </div>
       </div>
     </>

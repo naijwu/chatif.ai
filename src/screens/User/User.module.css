@@ -9,7 +9,7 @@
 .interfaceWrapper {
   position: fixed;
   bottom: 0;
-  right: 1rem;
+  right: 2rem;
 }
 
 .interface {
@@ -18,13 +18,21 @@
 }
 
 .chat {
-  background-color: #ffffff;
-  margin-bottom: 0.5rem;
-}
-
-.guy {
-  display: flex;
-  height: 40px;
   width: 300px;
-  background-color: black;
+  height: 400px;
+
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+
+  background-color: white;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+
+  transition: all 0.15s ease;
+  transform: translateY(250px);
+}
+.chat.opened {
+  transform: translateY(0px);
+}
+.guy {
+  height: 50px;
 }
