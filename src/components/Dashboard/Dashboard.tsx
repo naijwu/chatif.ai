@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Button from "../Button/Button";
 import styles from "./Dashboard.module.css";
-import DashStats from "./DashStats.png";
-import Image from "next/image";
 import BotCard from "./botcard/BotCard";
 
 import { ref, onValue } from "firebase/database";
 import { db } from "@/utility/firebase";
 import { Bot } from "@/utility/types";
+import DashStatistics from "./DashStatistics";
+import { PageContext } from "@/screens/Client/Client";
 
 const PlusIcon = () => (
   <svg
@@ -28,9 +28,13 @@ const PlusIcon = () => (
 
 type Props = {
   setPage: React.Dispatch<React.SetStateAction<string>>;
+  setPageContext: React.Dispatch<React.SetStateAction<PageContext>>;
 };
 
-const Dashboard = ({ setPage }: Props) => {
+const Dashboard = ({ 
+  setPage,
+  setPageContext
+}: Props) => {
   const userUID = "Y458AEs1X0MUcqcTduJwBq1WDOh2";
   const [bots, setBots] = useState<Bot[]>([]);
   useEffect(() => {
@@ -59,7 +63,7 @@ const Dashboard = ({ setPage }: Props) => {
         </Button>
       </div>
 
-      <Image src={DashStats} alt="" />
+      <DashStatistics />
 
       <div className={styles.botList}>
         <h3 className={styles.subheading}>Your Chatbots</h3>
@@ -68,7 +72,13 @@ const Dashboard = ({ setPage }: Props) => {
             <BotCard
               key={index}
               {...bot}
-              onView={() => {}}
+              onView={() => {
+                setPage('view'); 
+                setPageContext({
+                  isNew: false,
+                  chatAppId: bot.name
+                })
+              }}
               onCustomize={() => {}}
             />
           ))}

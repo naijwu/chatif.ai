@@ -9,10 +9,16 @@
     cursor: pointer;
     transition: all 0.13s ease;
     box-shadow: 0 0 2px var(--color-blue);
+    user-select: none;
 }
-.button:hover {
+.button:not(.disabled):hover {
     filter: brightness(0.95);
 }
-.button:active {
+.button:not(.disabled):active {
     transform: scale(0.98);
+}
+.disabled {
+    background: #ccc;
+    color: #777;
+    cursor: default;
 }

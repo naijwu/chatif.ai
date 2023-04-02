@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "../Button/Button";
 import styles from "./CreationPage.module.css";
-import { APIFY_DATA_TIMEOUT } from "@/screens/Client/Client";
+import { APIFY_DATA_TIMEOUT, PageContext } from "@/screens/Client/Client";
 
 type Props = {
   url: string;
@@ -9,6 +9,7 @@ type Props = {
   appName: string;
   setAppName: React.Dispatch<React.SetStateAction<string>>;
   setPage: React.Dispatch<React.SetStateAction<string>>;
+  setPageContext: React.Dispatch<React.SetStateAction<PageContext>>;
   loading: boolean;
   handleScrape: () => void;
 };
@@ -25,22 +26,29 @@ const CreationPage = ({
   return (
     <div className={styles.container}>
       <div className={styles.buttons}>
-        <Button href="#">
-          <div
-            className={styles.buttonInner}
-            onClick={() => {
-              setPage("dashboard");
-            }}
-          >
-            Back
-          </div>
-        </Button>
+        {!loading && (
+          <Button href="#" disabled={loading}>
+            <div
+              className={`${styles.buttonInner}`}
+              onClick={() => {
+                if (loading) return
+                setPage("dashboard");
+              }}
+            >
+              <span>
+                {`<-`}
+              </span>
+              Dashboard
+            </div>
+          </Button>
+        )}
       </div>
 
       <div className={styles.newBot}>
         <h2>
           {loading ? `Generating your chatbot` : `Let's generate your chatbot!`}
         </h2>
+        {loading && <p>Please wait until the process completes before leaving this page</p>}
         {loading ? (
           <>
             <div className={styles.progress}>

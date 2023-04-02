@@ -12,18 +12,27 @@ import View from "@/components/View/View";
 const APIFY_API_KEY = process.env.NEXT_PUBLIC_APIFY_API_KEY;
 export const APIFY_DATA_TIMEOUT = 120;
 
+export type PageContext = {
+    isNew?: boolean,
+    chatAppId?: string
+  }
+
 const Client = () => {
   const userUID = "Y458AEs1X0MUcqcTduJwBq1WDOh2";
 
   const [page, setPage] = useState("dashboard");
+  const [pageContext, setPageContext] = useState<PageContext>({})
   const [loading, setLoading] = useState<boolean>(false);
-  const [result, setResult] = useState<any>();
 
   const [appName, setAppName] = useState("");
   const [url, setURL] = useState("");
 
   const pageDict = {
-    dashboard: <Dashboard setPage={setPage} />,
+    dashboard: (
+      <Dashboard 
+        setPage={setPage}
+        setPageContext={setPageContext} />
+    ),
     creation: (
       <CreationPage
         url={url}
@@ -32,10 +41,15 @@ const Client = () => {
         setAppName={setAppName}
         setPage={setPage}
         loading={loading}
+        setPageContext={setPageContext}
         handleScrape={handleScrape}
       />
     ),
-    view: <View />,
+    view: (
+      <View 
+        pageContext={pageContext}
+        setPage={setPage} />
+    ),
   };
 
   function fetchDataset(datasetId: any) {
@@ -161,7 +175,13 @@ const Client = () => {
       pages: cleanedArray,
     });
 
-    setResult(cleanedArray);
+
+    // finished creating bot, redirect to view page
+    setPage('view')
+    setPageContext({
+        isNew: true,
+        chatAppId: appName
+    })
   }
 
   return (
