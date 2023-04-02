@@ -5,8 +5,15 @@ import { openai } from "@/utility/openai";
 import { flatSummaryToTree } from "@/utility/scrapeProcessing";
 import { ref, set } from "firebase/database";
 import { db } from "../../utility/firebase";
+import Button from "@/components/Button/Button";
+import Avatar from "@/components/Avatar";
+import HomeIcon from "@/components/icons/HomeIcon";
 
 const APIFY_API_KEY = process.env.NEXT_PUBLIC_APIFY_API_KEY;
+
+const PlusIcon = () => (
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+)
 
 const Client = () => {
   const APIFY_DATA_TIMEOUT = 120000;
@@ -142,15 +149,49 @@ const Client = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.section}>
-        <h3>Website you want to botify:</h3>
-        <input
-          type="text"
-          value={websiteLink}
-          onChange={(e) => setWebsiteLink(e.target.value)}
-        />
-        <button onClick={handleScrape}>Add!</button>
-      </div>
+        <div className={styles.sidebar}>
+            <div className={styles.brand}>
+                <Avatar />
+            </div>
+            <div className={styles.icons}>
+                {[
+                    {
+                        link: '#',
+                        icon: <HomeIcon />
+                    }
+                ].map((linkItem, index) => (
+                    <div key={index} className={styles.sidebarLink}>
+                        {linkItem.icon}
+                    </div>
+                ))}
+                
+            </div>
+            <div className={styles.userIcon}>
+
+            </div>
+        </div>
+        <div className={styles.wrapper}>
+            <div className={styles.section}>
+                <h2>
+                    Dashboard
+                </h2>
+                <div className={styles.buttons}>
+                    <Button href="#">
+                        <div className={styles.buttonInner}>
+                            <PlusIcon />
+                            New chatbot
+                        </div>
+                    </Button>
+                </div>
+                <h3>Website you want to botify:</h3>
+                <input
+                    type="text"
+                    value={websiteLink}
+                    onChange={(e) => setWebsiteLink(e.target.value)}
+                    />
+                <button onClick={handleScrape}>Add!</button>
+            </div>
+        </div>
 
       {loading && "loading..."}
       {result && (
