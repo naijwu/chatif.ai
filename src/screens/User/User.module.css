@@ -18,8 +18,9 @@
 }
 
 .chat {
-  width: 300px;
-  height: 400px;
+  width: 350px;
+  height: 450px;
+  position: relative;
 
   box-shadow: 0 0 10px rgba(0,0,0,0.05);
 
@@ -27,12 +28,121 @@
   border-radius: 12px;
   margin-bottom: 0.5rem;
 
-  transition: all 0.15s ease;
-  transform: translateY(250px);
+  transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transform: translateY(400px);
 }
 .chat.opened {
   transform: translateY(0px);
 }
 .guy {
-  height: 50px;
+  position: absolute;
+  background: #3a7cff9a;
+  font-family: "Space Grotesk", monospace;
+  border-radius: 12px 12px 0 0;
+  backdrop-filter: blur(10px);
+  color: white;
+  
+  top: 0;
+  width: 100%;
+  height: 60px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 1rem;
+
+  gap: 0.8rem;
+}
+.whiteAvatar {
+  height: 35px;
+  width: 35px;
+  background: white;
+  border-radius: 35px;
+}
+.chatHistory {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 100%;
+  overflow-y: auto;
+
+  padding: 80px 1rem;
+}
+.chatRow {
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  padding-right: 4rem;
+  padding-left: 0rem;
+  gap: 0.5rem;
+}
+.chatRow.right {
+  justify-content: flex-end;
+  padding-left: 4rem;
+  padding-right: 0rem;
+}
+.avatarWrapper {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  display: none;
+}
+.avatar {
+  height: 100%;
+  width: 100%;
+  background: #ccc;
+  border-radius: 100%;
+}
+.chatMessage {
+  background-color: #3A7DFF;
+  border-radius: 8px;
+  padding: 0.5rem 0.7rem;
+  color: white;
+  font-size: 0.98rem;
+  line-height: 150%;
+}
+.chatMessage.user {
+  background-color: #777;
+}
+
+.chatBox {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+.chatBoxInner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.chatBox input[type="text"] {
+  padding: 0.8rem;
+  outline: none;
+  resize: none;
+  border: none;
+  background: #eeeeee83;
+  backdrop-filter: blur(10px);
+  border-radius: 999px;
+   font-size: 1rem;
+   width: 100%;
+}
+.chatBox .sendButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0.5rem;
+  background-color: #3A7DFF;
+  padding: 0.5rem 0.8rem;
+  border-radius: 1000px;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-family: "Space Grotesk", monospace;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 }
