@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  background-color: #ffffff;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.right {
+  display: flex;
+  background: rgb(174, 141, 204);
+  background: linear-gradient(
+    90deg,
+    rgba(174, 141, 204, 1) 0%,
+    rgba(205, 208, 255, 1) 35%
+  );
+}

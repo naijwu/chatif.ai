@@ -8,7 +8,7 @@ type Props = {
   setURL: React.Dispatch<React.SetStateAction<string>>;
   appName: string;
   setAppName: React.Dispatch<React.SetStateAction<string>>;
-  setIsCreating: React.Dispatch<React.SetStateAction<boolean>>;
+  setPage: React.Dispatch<React.SetStateAction<string>>;
   loading: boolean;
   handleScrape: () => void;
 };
@@ -18,7 +18,7 @@ const CreationPage = ({
   setURL,
   appName,
   setAppName,
-  setIsCreating,
+  setPage,
   loading,
   handleScrape,
 }: Props) => {
@@ -29,7 +29,7 @@ const CreationPage = ({
           <div
             className={styles.buttonInner}
             onClick={() => {
-              setIsCreating(false);
+              setPage("dashboard");
             }}
           >
             Back

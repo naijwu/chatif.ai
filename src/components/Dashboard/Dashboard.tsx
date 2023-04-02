@@ -27,10 +27,10 @@ const PlusIcon = () => (
 );
 
 type Props = {
-  setIsCreating: React.Dispatch<React.SetStateAction<boolean>>;
+  setPage: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const Dashboard = ({ setIsCreating }: Props) => {
+const Dashboard = ({ setPage }: Props) => {
   const userUID = "Y458AEs1X0MUcqcTduJwBq1WDOh2";
   const [bots, setBots] = useState<Bot[]>([]);
   useEffect(() => {
@@ -50,7 +50,7 @@ const Dashboard = ({ setIsCreating }: Props) => {
           <div
             className={styles.buttonInner}
             onClick={() => {
-              setIsCreating(true);
+              setPage("creation");
             }}
           >
             <PlusIcon />
