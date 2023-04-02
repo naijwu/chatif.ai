@@ -40,36 +40,6 @@
 .dashboard {
 }
 
-.newBot {
-  padding: 4rem 3rem;
-  border-radius: 14px;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.newBot h2 {
-  font-family: "Space Grotesk", monospace;
-  font-weight: 500;
-}
-
-.newBot strong {
-  font-family: "Space Grotesk", monospace;
-}
-
-.newBot input[type="text"] {
-  padding: 0.5rem;
-  border-radius: 5px;
-  border: 1px solid #eee;
-  font-size: 1rem;
-  transition: all 0.13s ease;
-  outline: none;
-}
-.newBot input[type="text"]:focus {
-  border-color: var(--color-purple);
-}
-
 .field {
   display: flex;
   flex-direction: column;
@@ -90,26 +60,4 @@
 }
 .button:active {
   transform: scale(0.98);
-}
-
-.buttonPane {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.progress {
-  height: 30px;
-  width: 100%;
-  background-color: #eee;
-  border-radius: 6px;
-  margin-top: 1rem;
-  overflow: hidden;
-}
-.progressBar {
-  background-color: var(--color-purple);
-  height: 100%;
-  width: 0%;
-}
-.progressBar.loading {
-  width: 100%;
 }

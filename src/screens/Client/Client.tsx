@@ -4,21 +4,21 @@ import axios from "axios";
 import { openai } from "@/utility/openai";
 import { ref, set } from "firebase/database";
 import { db } from "../../utility/firebase";
-import Button from "@/components/Button/Button";
 import Dashboard from "@/components/Dashboard/Dashboard";
 import Sidebar from "@/components/Sidebar/Sidebar";
+import CreationPage from "@/components/CreationPage/CreationPage";
 
 const APIFY_API_KEY = process.env.NEXT_PUBLIC_APIFY_API_KEY;
+export const APIFY_DATA_TIMEOUT = 120;
 
 const Client = () => {
-  const APIFY_DATA_TIMEOUT = 120;
   const userUID = "Y458AEs1X0MUcqcTduJwBq1WDOh2";
 
   const [loading, setLoading] = useState<boolean>(false);
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const [result, setResult] = useState<any>();
 
-  const [appName, setName] = useState("");
+  const [appName, setAppName] = useState("");
   const [url, setURL] = useState("");
 
   const fetchDataset = (datasetId: any) => {
@@ -153,67 +153,15 @@ const Client = () => {
       <div className={styles.wrapper}>
         <div className={styles.section}>
           {isCreating ? (
-            <>
-              <div className={styles.buttons}>
-                <Button href="#">
-                  <div
-                    className={styles.buttonInner}
-                    onClick={() => {
-                      setIsCreating(false);
-                    }}
-                  >
-                    Back
-                  </div>
-                </Button>
-              </div>
-
-              <div className={styles.newBot}>
-                <h2>
-                  {loading
-                    ? `Generating your chatbot`
-                    : `Let's generate your chatbot!`}
-                </h2>
-                {!loading ? (
-                  <>
-                    <div className={styles.progress}>
-                      <div
-                        className={`${styles.progressBar} ${
-                          loading ? styles.loading : ""
-                        }`}
-                      ></div>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className={styles.field}>
-                      <strong>Name</strong>
-                      <input
-                        value={appName}
-                        onChange={(e) => {
-                          setName(e.target.value);
-                        }}
-                        type="text"
-                      />
-                    </div>
-                    <div className={styles.field}>
-                      <strong>URL</strong>
-                      <input
-                        value={url}
-                        onChange={(e) => {
-                          setURL(e.target.value);
-                        }}
-                        type="text"
-                      />
-                    </div>
-                    <div className={styles.buttonPane}>
-                      <div className={styles.button} onClick={handleScrape}>
-                        Generate
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-            </>
+            <CreationPage
+              url={url}
+              setURL={setURL}
+              appName={appName}
+              setAppName={setAppName}
+              setIsCreating={setIsCreating}
+              loading={loading}
+              handleScrape={handleScrape}
+            />
           ) : (
             <Dashboard setIsCreating={setIsCreating} />
           )}
