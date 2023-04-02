@@ -1,83 +1,123 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from "react";
 import { ChatCompletionRequestMessage } from "openai";
-import styles from './User.module.css'
-import { openai } from '@/utility/openai';
+import styles from "./User.module.css";
+import { openai } from "@/utility/openai";
+import { ref, onValue } from "firebase/database";
+import { db } from "@/utility/firebase";
+import { chooseBetweenNodes } from "@/utility/userTraversal";
+import { ChatLog } from "@/utility/types";
 
-const User = ({
-    demoUrl
-}: {
-    demoUrl?: string
-}) => {
-    const [showChat, setShowChat] = useState<boolean>(false)
+const User = ({ demoUrl }: { demoUrl?: string }) => {
+  const userUID = "Y458AEs1X0MUcqcTduJwBq1WDOh2";
+  const appName = "telus-bot";
+  const [flatSummaries, setFlatSummaries] = useState([]);
+  useEffect(() => {
+    onValue(ref(db, `users/${userUID}/${appName}`), (snapshot) => {
+      const data = snapshot.val() || [];
+      setFlatSummaries(data);
+    });
+  }, []);
 
-    const [question, setQuestion] = useState<string>('')
-    const [loading, setLoading] = useState<boolean>(false)
+  const questionRef = useRef<HTMLTextAreaElement>(null);
+  const [showChat, setShowChat] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
-    const [chatHistory, setChatHistory] = useState<{
-        content: string,
-        role: 'system' | 'user' | 'assistant'
-    }[]>([
-        {
-            role: 'system',
-            content: "you are a helpful, witty, friendly assistant."
-        }
-    ])
+  const [chatHistory, setChatHistory] = useState<ChatLog[]>([
+    {
+      role: "system",
+      content: "you are a helpful, professional, friendly assistant.",
+    },
+  ]);
+  const [chatHistoryToDisplay, setChatHistoryToDisplay] = useState<ChatLog[]>(
+    []
+  );
 
-    const updateChat = async (updatedChatHistory: any) => {
-        const response = await openai.createChatCompletion({ 
-            model: "gpt-3.5-turbo",
-            messages: updatedChatHistory as ChatCompletionRequestMessage[]
-        })
+  const addQuestionToView = () => {
+    const question = questionRef.current?.value || "";
+    const updatedChatHistory = JSON.parse(
+      JSON.stringify(chatHistoryToDisplay || [])
+    );
+    updatedChatHistory.push({
+      content: question,
+      role: "user",
+    });
+    setChatHistoryToDisplay(updatedChatHistory);
+  };
 
-        const respondedChatHistory = JSON.parse(JSON.stringify(updatedChatHistory || []))
-        respondedChatHistory.push(response.data.choices[0].message)
-        setChatHistory(respondedChatHistory)
+  const addResponseToView = (response: any) => {
+    setChatHistoryToDisplay((prev) => prev.concat(response));
+  };
 
-        setLoading(false)
-    }
+  const askGPT = async () => {
+    const question = questionRef.current?.value || "";
 
-    const addChat = async () => {
-        const updatedChatHistory = JSON.parse(JSON.stringify(chatHistory || []))
-        updatedChatHistory.push({
-            content: question,
-            role: 'user'
-        })
-        setQuestion('')
-        setChatHistory(updatedChatHistory)
-        setLoading(true)
+    const nodeToSearch = await chooseBetweenNodes(question, flatSummaries);
+    const prompt = `${question}\n\nAnswer with the following website content:\n\n${nodeToSearch?.content}`;
+    const updatedChatHistory = JSON.parse(
+      JSON.stringify(chatHistory || [])
+    ).concat({
+      content: prompt,
+      role: "user",
+    });
 
-        await updateChat(updatedChatHistory)
-    }
+    const response = (
+      await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: updatedChatHistory as ChatCompletionRequestMessage[],
+      })
+    ).data.choices[0].message;
 
-    return (
-        <>
-            <iframe width="100%" height="100%" className={styles.demoWebsite} src={`https://${demoUrl}`} />
+    const respondedChatHistory = JSON.parse(
+      JSON.stringify(updatedChatHistory || [])
+    ).concat(response);
 
-            <div className={styles.interfaceWrapper}>
-                <div className={styles.interface}>
-                    <div className={`${styles.chat} ${showChat ? styles.opened : ''}`}>
-                        <div className={styles.chatHistory}>
-                            {chatHistory?.map((item, index) => item.role !== 'system' && (
-                                <div key={index}>
-                                    {item.role === 'user' ? '(me)' : '(bot)'} {item.content}
-                                </div>
-                            ))}
-                            {loading && 'typing...'}
-                        </div>
-                        <div className={styles.chatBox}>
-                            <textarea value={question} onChange={e=>setQuestion(e.target.value)} />
-                            <button onClick={addChat}>
-                                Send
-                            </button>
-                        </div>
+    setChatHistory(respondedChatHistory);
+    addResponseToView(response);
+  };
+
+  return (
+    <>
+      <iframe
+        width="100%"
+        height="100%"
+        className={styles.demoWebsite}
+        src={`https://${demoUrl}`}
+      />
+
+      <div className={styles.interfaceWrapper}>
+        <div className={styles.interface}>
+          <div className={`${styles.chat} ${showChat ? styles.opened : ""}`}>
+            <div className={styles.chatHistory}>
+              {chatHistoryToDisplay?.map(
+                (item, index) =>
+                  item.role !== "system" && (
+                    <div key={index}>
+                      {item.role === "user" ? "(me)" : "(bot)"} {item.content}
                     </div>
-                    <div className={styles.guy}>
-                        Chat
-                    </div>
-                </div>
+                  )
+              )}
+              {loading && "typing..."}
             </div>
-        </>
-    )
-}
+            <div className={styles.chatBox}>
+              <textarea ref={questionRef} />
+              <button
+                onClick={async () => {
+                  addQuestionToView();
+
+                  setLoading(true);
+                  await askGPT();
+                  setLoading(false);
+                }}
+              >
+                Send
+              </button>
+            </div>
+          </div>
+          <div className={styles.guy}>Chat</div>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default User;

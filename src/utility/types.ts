@@ -8,3 +8,8 @@ export type FlatSummaryNode = {
 export type TreeNode = FlatSummaryNode & {
   children: TreeNode[];
 };
+
+export type ChatLog = {
+  content: string;
+  role: "system" | "user" | "assistant";
+};

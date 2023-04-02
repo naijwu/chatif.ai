@@ -9,9 +9,9 @@ import { db } from "../../utility/firebase";
 const APIFY_API_KEY = process.env.NEXT_PUBLIC_APIFY_API_KEY;
 
 const Client = () => {
-  const APIFY_DATA_TIMEOUT = 20000;
+  const APIFY_DATA_TIMEOUT = 120000;
   const userUID = "Y458AEs1X0MUcqcTduJwBq1WDOh2";
-  const appName = "cra-bot";
+  const appName = "telus-bot";
 
   const [websiteLink, setWebsiteLink] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -101,7 +101,7 @@ const Client = () => {
   async function getSummaryOfText(textToSummarize: string) {
     const response = await openai.createCompletion({
       model: "text-davinci-002",
-      prompt: `Summarize the following content: ${textToSummarize}`,
+      prompt: `Summarize the following content, but keep interesting keywords in the summary: ${textToSummarize}`,
       max_tokens: 257,
       temperature: 0.1,
     });
@@ -132,9 +132,11 @@ const Client = () => {
       });
     }
 
-    const treeRepresentation = flatSummaryToTree(cleanedArray);
-    set(ref(db, `users/${userUID}/${appName}`), treeRepresentation);
+    // const treeRepresentation = flatSummaryToTree(cleanedArray);
+    // set(ref(db, `users/${userUID}/${appName}`), treeRepresentation);
+    set(ref(db, `users/${userUID}/${appName}`), cleanedArray);
 
+    console.log(scrapedArray);
     setResult(cleanedArray);
   }
 
