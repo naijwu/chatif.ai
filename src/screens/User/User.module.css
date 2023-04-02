@@ -28,3 +28,9 @@
     width: 300px;
     background-color: black;
 }
+
+.accessibility {
+    padding-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+}
