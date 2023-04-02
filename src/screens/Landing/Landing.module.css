@@ -2,6 +2,7 @@
 .container {
     width: 100%;
     padding-bottom: 5rem;
+    position: relative;
 }
 
 .navigation {
@@ -64,4 +65,54 @@
     min-height: 400px;
     background-color: #EEE;
     border-radius: 18px;
+}
+
+.featuresWrapper {
+    width: 1300px;
+    margin: 5rem auto;
+    background: linear-gradient(to bottom, #9858D8, #4643C6);
+    padding: 3rem 1rem;
+    border-radius: 20px;
+}
+
+.featuresWrapper h2 {
+    font-family: "Space Grotesk", monospace;
+    color: white;
+    text-align: center;
+    font-weight: 500;
+    font-size: 2rem;
+    padding: 1rem 0 2rem 0;
+}
+
+.featuresGrid {
+    width: 1000px;
+    margin: 0 auto;
+    height: 300px;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+}
+
+.feature {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+}
+.feature .featureImage {
+    height: 220px;
+    width: 220px;
+    border-radius: 10px;
+    background-color: #fff;
+}
+.feature h3 {
+    padding-top: 0.5rem;
+    color: white;
+    font-family: "Space Grotesk", monospace;
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+.feature p {
+    padding-top: 0rem;
+    color: white;
 }

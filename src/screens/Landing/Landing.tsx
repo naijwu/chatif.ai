@@ -46,6 +46,41 @@ const Landing = () => {
             <div className={styles.immerse}>
 
             </div>
+
+            <div className={styles.featuresWrapper}>
+                <h2>Features</h2>
+                <div className={styles.featuresGrid}>
+                    {[
+                        {
+                            title: 'feature',
+                            content: '123',
+                        },
+                        {
+                            title: 'feature',
+                            content: '123',
+                        },
+                        {
+                            title: 'feature',
+                            content: '123',
+                        },
+                        {
+                            title: 'feature',
+                            content: '123',
+                        }
+                    ].map((feature, index) => (
+                        <div className={styles.feature} key={index}>
+                            <div className={styles.featureImage}>
+                            </div>
+                            <h3 className={styles.featureTitle}>
+                                {feature.title}
+                            </h3>
+                            <p className={styles.featureInfo}>
+                                {feature.content}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
     )
 }
