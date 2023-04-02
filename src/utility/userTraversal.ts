@@ -24,7 +24,7 @@ export async function chooseBetweenNodes(
       {
         role: "system",
         content:
-          "You are a helpful assistant. Your responses are always a single number, with no other characters.",
+          "You are a helpful assistant. Your responses are always an array in JSON format, nothing else.",
       },
       {
         role: "user",
