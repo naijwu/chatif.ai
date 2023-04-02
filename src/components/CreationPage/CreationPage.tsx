@@ -23,7 +23,7 @@ const CreationPage = ({
   handleScrape,
 }: Props) => {
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.buttons}>
         <Button href="#">
           <div
@@ -44,14 +44,9 @@ const CreationPage = ({
         {loading ? (
           <>
             <div className={styles.progress}>
-              <div
-                style={{
-                  transition: `all ${APIFY_DATA_TIMEOUT}s linear`,
-                }}
-                className={`${styles.progressBar} ${
-                  loading ? styles.loading : ""
-                }`}
-              ></div>
+              <div style={{
+                animationDuration: `${APIFY_DATA_TIMEOUT}s`
+              }} className={styles.progressBar}></div>
             </div>
           </>
         ) : (
