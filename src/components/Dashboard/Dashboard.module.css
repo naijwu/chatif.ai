@@ -22,7 +22,7 @@
 }
 
 .botList {
-  width: 80%;
+  width: 100%;
   display: grid;
   gap: 1rem;
   margin-top: 10px;

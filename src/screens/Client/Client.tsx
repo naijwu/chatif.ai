@@ -61,7 +61,6 @@ const Client = () => {
         .then((data) => {
           console.log(data.length);
           cleanAndAddContext(data);
-          setLoading(false);
         })
         .catch((error) => console.error(error));
     }
@@ -175,6 +174,7 @@ const Client = () => {
       pages: cleanedArray,
     });
 
+    setLoading(false);
 
     // finished creating bot, redirect to view page
     setPage('view')

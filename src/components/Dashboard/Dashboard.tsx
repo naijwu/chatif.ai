@@ -55,8 +55,7 @@ const Dashboard = ({
             className={styles.buttonInner}
             onClick={() => {
               setPage("creation");
-            }}
-          >
+            }}>
             <PlusIcon />
             New chatbot
           </div>
@@ -66,7 +65,7 @@ const Dashboard = ({
       <DashStatistics />
 
       <div className={styles.botList}>
-        <h3 className={styles.subheading}>Your Chatbots</h3>
+        <h3 className={styles.subheading}>Available chatbots</h3>
         <div className={styles.botCards}>
           {bots.map((bot, index) => (
             <BotCard

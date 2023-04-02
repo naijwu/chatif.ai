@@ -47,7 +47,7 @@ const Landing = () => {
 
             </div>
 
-            <div className={styles.featuresWrapper}>
+            {/* <div className={styles.featuresWrapper}>
                 <h2>Features</h2>
                 <div className={styles.featuresGrid}>
                     {[
@@ -80,7 +80,7 @@ const Landing = () => {
                         </div>
                     ))}
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }
