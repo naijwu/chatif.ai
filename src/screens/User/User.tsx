@@ -6,6 +6,7 @@ import { ref, onValue } from "firebase/database";
 import { db } from "@/utility/firebase";
 import { chooseBetweenNodes } from "@/utility/userTraversal";
 import { ChatLog } from "@/utility/types";
+import { useRouter } from "next/router";
 
 const SendIcon = () => (
   <svg
@@ -35,8 +36,16 @@ const SendIcon = () => (
 );
 
 const User = ({ demoUrl }: { demoUrl?: string }) => {
+    const router = useRouter()
+    const routeArray = router.asPath.split('?')
+    let customDemoApp
+    if(routeArray.length > 1 && routeArray[1].includes('appName')) {
+        customDemoApp = routeArray[1].split('=')[1]
+    }
+    console.log(customDemoApp)
+
   const userUID = "Y458AEs1X0MUcqcTduJwBq1WDOh2";
-  const appName = "telus-bot";
+  const appName = customDemoApp || 'stronger-bc';
   const [flatSummaries, setFlatSummaries] = useState([]);
   useEffect(() => {
     onValue(ref(db, `users/${userUID}/${appName}/pages`), (snapshot) => {
@@ -121,7 +130,7 @@ const User = ({ demoUrl }: { demoUrl?: string }) => {
           <div className={`${styles.chat} ${showChat ? styles.opened : ""}`}>
             <div className={styles.guy} onClick={() => setShowChat(!showChat)}>
               <div className={styles.whiteAvatar}></div>
-              chatif.ai
+              chatif.ai {appName && `(${appName})`}
             </div>
             <div className={styles.chatHistory}>
               {chatHistoryToDisplay?.map(

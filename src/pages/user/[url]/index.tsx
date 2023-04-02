@@ -19,7 +19,6 @@ export default function UserPage({ demoUrl }: any) {
 
 export async function getServerSideProps(context: any) {
   const { url } = context.params
-
   return {
     props: {
       demoUrl: url

@@ -152,7 +152,6 @@ const Client = () => {
       <Sidebar />
       <div className={styles.wrapper}>
         <div className={styles.section}>
-          {loading && "loading..."}
           {isCreating ? (
             <>
               <div className={styles.buttons}>
@@ -174,13 +173,10 @@ const Client = () => {
                     ? `Generating your chatbot`
                     : `Let's generate your chatbot!`}
                 </h2>
-                {loading ? (
+                {!loading ? (
                   <>
                     <div className={styles.progress}>
                       <div
-                        style={{
-                          transition: `all ${APIFY_DATA_TIMEOUT}s linear`,
-                        }}
                         className={`${styles.progressBar} ${
                           loading ? styles.loading : ""
                         }`}

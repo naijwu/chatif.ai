@@ -9,6 +9,8 @@
   --color-ui-2: #272B35;
   --color-ui-3: #1F212C;
   --color-ui-4: #151823;
+
+  --chat-box-height: 600px;
 }
 
 * {
