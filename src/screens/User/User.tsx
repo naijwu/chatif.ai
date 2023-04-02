@@ -51,8 +51,10 @@ const User = ({ demoUrl }: { demoUrl?: string }) => {
   const askGPT = async () => {
     const question = questionRef.current?.value || "";
 
-    const nodeToSearch = await chooseBetweenNodes(question, flatSummaries);
-    const prompt = `${question}\n\nAnswer with the following website content:\n\n${nodeToSearch?.content}`;
+    const nodesToSearch = await chooseBetweenNodes(question, flatSummaries);
+    const prompt = `${question}\n\nAnswer with the following website content:\n\n${nodesToSearch[0].content}`;
+
+    console.log(prompt);
     const updatedChatHistory = JSON.parse(
       JSON.stringify(chatHistory || [])
     ).concat({

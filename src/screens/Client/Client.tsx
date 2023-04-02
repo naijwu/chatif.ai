@@ -12,8 +12,21 @@ import HomeIcon from "@/components/icons/HomeIcon";
 const APIFY_API_KEY = process.env.NEXT_PUBLIC_APIFY_API_KEY;
 
 const PlusIcon = () => (
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-)
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <line x1="12" y1="5" x2="12" y2="19"></line>
+    <line x1="5" y1="12" x2="19" y2="12"></line>
+  </svg>
+);
 
 const Client = () => {
   const APIFY_DATA_TIMEOUT = 120;
@@ -23,9 +36,24 @@ const Client = () => {
   const [websiteLink, setWebsiteLink] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [isCreating, setIsCreating] = useState<boolean>(false)
+  const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const [result, setResult] = useState<any>();
+
+  const fetchDataset = (datasetId: any) => {
+    if (datasetId) {
+      fetch(
+        `https://api.apify.com/v2/datasets/${datasetId}/items?token=${APIFY_API_KEY}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data.length);
+          cleanAndAddContext(data);
+          setLoading(false);
+        })
+        .catch((error) => console.error(error));
+    }
+  };
 
   const scrapeApify = async () => {
     let datasetId: undefined | number = undefined;
@@ -79,22 +107,9 @@ const Client = () => {
         datasetId = response.data.data.defaultDatasetId;
         console.log(response.data, datasetId);
 
-        const fetchDataset = () => {
-          if (datasetId) {
-            fetch(
-              `https://api.apify.com/v2/datasets/${datasetId}/items?token=${APIFY_API_KEY}`
-            )
-              .then((response) => response.json())
-              .then((data) => {
-                console.log(data.length);
-                cleanAndAddContext(data);
-                setLoading(false);
-              })
-              .catch((error) => console.error(error));
-          }
-        };
-
-        setTimeout(fetchDataset, APIFY_DATA_TIMEOUT * 1000);
+        setTimeout(() => {
+          fetchDataset(datasetId);
+        }, APIFY_DATA_TIMEOUT * 1000);
       })
       .catch(function (error) {
         console.error(error);
@@ -151,93 +166,106 @@ const Client = () => {
 
   return (
     <div className={styles.container}>
-        <div className={styles.sidebar}>
-            <div className={styles.brand}>
-                <Avatar />
+      <div className={styles.sidebar}>
+        <div className={styles.brand}>
+          <Avatar />
+        </div>
+        <div className={styles.icons}>
+          {[
+            {
+              link: "#",
+              icon: <HomeIcon />,
+            },
+          ].map((linkItem, index) => (
+            <div key={index} className={styles.sidebarLink}>
+              {linkItem.icon}
             </div>
-            <div className={styles.icons}>
-                {[
-                    {
-                        link: '#',
-                        icon: <HomeIcon />
-                    }
-                ].map((linkItem, index) => (
-                    <div key={index} className={styles.sidebarLink}>
-                        {linkItem.icon}
+          ))}
+        </div>
+        <div className={styles.userIcon}></div>
+      </div>
+      <div className={styles.wrapper}>
+        <div className={styles.section}>
+          {loading && "loading..."}
+          {isCreating ? (
+            <>
+              <div className={styles.buttons}>
+                <Button href="#">
+                  <div
+                    className={styles.buttonInner}
+                    onClick={() => {
+                      setIsCreating(false);
+                    }}
+                  >
+                    Back
+                  </div>
+                </Button>
+              </div>
+
+              <div className={styles.newBot}>
+                <h2>
+                  {loading
+                    ? `Generating your chatbot`
+                    : `Let's generate your chatbot!`}
+                </h2>
+                {loading ? (
+                  <>
+                    <div className={styles.progress}>
+                      <div
+                        style={{
+                          transition: `all ${APIFY_DATA_TIMEOUT}s linear`,
+                        }}
+                        className={`${styles.progressBar} ${
+                          loading ? styles.loading : ""
+                        }`}
+                      ></div>
                     </div>
-                ))}
-                
-            </div>
-            <div className={styles.userIcon}>
-
-            </div>
-        </div>
-        <div className={styles.wrapper}>
-            <div className={styles.section}>
-
-
-      {loading && "loading..."}
-                {isCreating ? (
-                    <>
-                        <div className={styles.buttons}>
-                            <Button href="#">
-                                <div className={styles.buttonInner} onClick={()=>{setIsCreating(false)}}>
-                                    Back
-                                </div>
-                            </Button>
-                        </div>
-
-                        <div className={styles.newBot}>
-                            <h2>{loading ? `Generating your chatbot` : `Let's generate your chatbot!`}</h2>
-                            {loading ? (
-                                <>
-                                    <div className={styles.progress}>
-                                        <div style={{
-                                            transition: `all ${APIFY_DATA_TIMEOUT}s linear`
-                                        }} className={`${styles.progressBar} ${loading ? styles.loading : ''}`}></div>
-                                    </div>
-                                </>
-                            ) : (
-                                <>
-                                    <div className={styles.field}>
-                                        <strong>Name</strong>
-                                        <input type="text" />
-                                    </div>
-                                    <div className={styles.field}>
-                                        <strong>URL</strong>
-                                        <input
-                                            type="text"
-                                            value={websiteLink}
-                                            onChange={(e) => setWebsiteLink(e.target.value)}
-                                            />
-                                    </div>
-                                    <div className={styles.buttonPane}>
-                                        <div className={styles.button} onClick={handleScrape}>Generate</div>
-                                    </div>
-                                </>
-                            )}
-                        </div>
-                    </>
+                  </>
                 ) : (
-                    <>
-                        <h2>
-                            Dashboard
-                        </h2>
-                        <div className={styles.buttons}>
-                            <Button href="#">
-                                <div className={styles.buttonInner} onClick={()=>{setIsCreating(true)}}>
-                                    <PlusIcon />
-                                    New chatbot
-                                </div>
-                            </Button>
-                        </div>
-
-                        <div className={styles.dashboard}>
-                        </div>
-                    </>
+                  <>
+                    <div className={styles.field}>
+                      <strong>Name</strong>
+                      <input type="text" />
+                    </div>
+                    <div className={styles.field}>
+                      <strong>URL</strong>
+                      <input
+                        type="text"
+                        value={websiteLink}
+                        onChange={(e) => setWebsiteLink(e.target.value)}
+                      />
+                    </div>
+                    <div className={styles.buttonPane}>
+                      <div className={styles.button} onClick={handleScrape}>
+                        Generate
+                      </div>
+                    </div>
+                  </>
                 )}
-            </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <h2>Dashboard</h2>
+              <div className={styles.buttons}>
+                <Button href="#">
+                  <div
+                    className={styles.buttonInner}
+                    onClick={() => {
+                      setIsCreating(true);
+                    }}
+                  >
+                    <PlusIcon />
+                    New chatbot
+                  </div>
+                </Button>
+              </div>
+
+              <div className={styles.dashboard}></div>
+            </>
+          )}
         </div>
+      </div>
     </div>
   );
 };
