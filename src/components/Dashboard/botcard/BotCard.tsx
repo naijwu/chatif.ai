@@ -3,15 +3,15 @@ import React from "react";
 import styles from "./BotCard.module.css";
 
 type Props = {
-  title: string;
+  name: string;
   onView: () => void;
   onCustomize: () => void;
 };
 
-const BotCard = ({ title, onView, onCustomize }: Props) => {
+const BotCard = ({ name, onView, onCustomize }: Props) => {
   return (
     <div className={styles.container}>
-      <h3 className={styles.title}>{title}</h3>
+      <h3 className={styles.title}>{name}</h3>
       <div className={styles.buttons}>
         <Button href="#" className={styles.btt} onClick={onView}>
           View

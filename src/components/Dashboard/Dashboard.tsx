@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../Button/Button";
 import styles from "./Dashboard.module.css";
 import DashStats from "./DashStats.png";
 import Image from "next/image";
 import BotCard from "./botcard/BotCard";
+
+import { ref, onValue } from "firebase/database";
+import { db } from "@/utility/firebase";
+import { Bot } from "@/utility/types";
 
 const PlusIcon = () => (
   <svg
@@ -26,20 +30,18 @@ type Props = {
   setIsCreating: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const bots = [
-  {
-    title: "Telus Bot",
-    onView: () => {},
-    onCustomize: () => {},
-  },
-  {
-    title: "Elections Canada Chatbot",
-    onView: () => {},
-    onCustomize: () => {},
-  },
-];
-
 const Dashboard = ({ setIsCreating }: Props) => {
+  const userUID = "Y458AEs1X0MUcqcTduJwBq1WDOh2";
+  const [bots, setBots] = useState<Bot[]>([]);
+  useEffect(() => {
+    onValue(ref(db, `users/${userUID}`), (snapshot) => {
+      const data = snapshot.val() || {};
+      const botObjects = Object.values(data) as Bot[];
+      console.log(botObjects);
+      setBots(botObjects);
+    });
+  }, []);
+
   return (
     <div className={styles.container}>
       <h2>Dashboard</h2>
@@ -63,7 +65,12 @@ const Dashboard = ({ setIsCreating }: Props) => {
         <h3 className={styles.subheading}>Your Chatbots</h3>
         <div className={styles.botCards}>
           {bots.map((bot, index) => (
-            <BotCard key={index} {...bot} />
+            <BotCard
+              key={index}
+              {...bot}
+              onView={() => {}}
+              onCustomize={() => {}}
+            />
           ))}
         </div>
       </div>

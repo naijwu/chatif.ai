@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styles from "./Client.module.css";
 import axios from "axios";
 import { openai } from "@/utility/openai";
@@ -13,14 +13,13 @@ const APIFY_API_KEY = process.env.NEXT_PUBLIC_APIFY_API_KEY;
 const Client = () => {
   const APIFY_DATA_TIMEOUT = 120;
   const userUID = "Y458AEs1X0MUcqcTduJwBq1WDOh2";
-  const appName = "telus-bot";
 
-  const [websiteLink, setWebsiteLink] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-
   const [isCreating, setIsCreating] = useState<boolean>(false);
-
   const [result, setResult] = useState<any>();
+
+  const [appName, setName] = useState("");
+  const [url, setURL] = useState("");
 
   const fetchDataset = (datasetId: any) => {
     if (datasetId) {
@@ -38,6 +37,7 @@ const Client = () => {
   };
 
   const scrapeApify = async () => {
+    const websiteLink = url;
     let datasetId: undefined | number = undefined;
     setLoading(true);
 
@@ -99,6 +99,7 @@ const Client = () => {
   };
 
   const handleScrape = async () => {
+    const websiteLink = url;
     console.log("scraping", websiteLink);
 
     await scrapeApify();
@@ -138,11 +139,11 @@ const Client = () => {
       });
     }
 
-    // const treeRepresentation = flatSummaryToTree(cleanedArray);
-    // set(ref(db, `users/${userUID}/${appName}`), treeRepresentation);
-    set(ref(db, `users/${userUID}/${appName}`), cleanedArray);
+    set(ref(db, `users/${userUID}/${appName}`), {
+      name: appName,
+      pages: cleanedArray,
+    });
 
-    console.log(scrapedArray);
     setResult(cleanedArray);
   }
 
@@ -190,14 +191,22 @@ const Client = () => {
                   <>
                     <div className={styles.field}>
                       <strong>Name</strong>
-                      <input type="text" />
+                      <input
+                        value={appName}
+                        onChange={(e) => {
+                          setName(e.target.value);
+                        }}
+                        type="text"
+                      />
                     </div>
                     <div className={styles.field}>
                       <strong>URL</strong>
                       <input
+                        value={url}
+                        onChange={(e) => {
+                          setURL(e.target.value);
+                        }}
                         type="text"
-                        value={websiteLink}
-                        onChange={(e) => setWebsiteLink(e.target.value)}
                       />
                     </div>
                     <div className={styles.buttonPane}>

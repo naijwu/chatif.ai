@@ -13,3 +13,8 @@ export type ChatLog = {
   content: string;
   role: "system" | "user" | "assistant";
 };
+
+export type Bot = {
+  name: string;
+  pages: any[];
+};
